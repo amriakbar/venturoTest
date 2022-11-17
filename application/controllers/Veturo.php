@@ -15,18 +15,33 @@ class Veturo extends CI_Controller {
 	#	$this->load->model('Venturo_models', 'venturo_models');
 	#}
 
-	public function hitung($key, $value){
-		foreach ($value as $a => $ab) {
-			$var['bulan'] = $a;
-			$var['total'] = $ab;
-			#$this->load->view('welcome_message', $var);
-		}
+	public function tampil($key, $value = null){
+		var_dump($key['hasil']);
 	}
 
 	public function buildData($result, $tahun = null)
 	{
 		$raw['menu'] = $result['menu'];
 		$raw['transaksi'] = $result['transaksi'];
+
+		$ttl = [];
+		foreach ($raw['menu'] as $a) {
+			echo '<br><hr>';
+			foreach ($raw['transaksi'] as $b) {
+				if ($b->menu == $a->menu) {
+					$bln = $this->Venturo_models->getMonth($b->tanggal);
+					$ttl[$bln][] = $b->total;
+				}
+			}
+
+			foreach ($ttl as $c => $cd) {
+				$d = $this->Venturo_models->hitung($cd);
+				echo $c.' => '.$d.' <br>';
+				$raw['hasil'] = $d;
+			}
+			$this->tampil($raw);
+			$ttl = [];
+		}
 	}
 
 	public function index()

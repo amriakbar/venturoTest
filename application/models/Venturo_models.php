@@ -40,8 +40,14 @@ class Venturo_models extends CI_Model {
 	function getMonth($timestamp, $perintah = null){
 		$time = strtotime($timestamp);
 		$month = date('F', $time);
+		if (strlen($month) > 3) {
+			$len = 3 - strlen($month);
+			$show = substr($month, 0, $len);
+		}else{
+			$show = $month;
+		}
 
-		return $month; //nama bulan dalam bentuk formal.
+		return $show; //nama bulan dalam bentuk formal.
 	}
 }
 ?>
