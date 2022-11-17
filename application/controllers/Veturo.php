@@ -2,48 +2,18 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Veturo extends CI_Controller {
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('venturo_models', 'Venturo_models');
+	}
 	public $path = 'http://tes-web.landa.id/intermediate/';
 
 	#public function __construct(){
 	#	parent::__construct();
 	#	$this->load->model('Venturo_models', 'venturo_models');
 	#}
-
-	public function table($value='')
-	{
-		$template = array(
-        'table_open'            => '<table class="table table-hover table-bordered" style="margin: 0;">',
-
-        'thead_open'            => '<thead>',
-        'thead_close'           => '</thead>',
-
-        'heading_row_start'     => '<tr class="table-dark">',
-        'heading_row_end'       => '</tr>',
-        'heading_cell_start'    => '<th style="text-align: center;width: 75px;">',
-        'heading_cell_end'      => '</th>',
-
-        'tbody_open'            => '<tbody>',
-        'tbody_close'           => '</tbody>',
-
-        'row_start'             => '<tr>',
-        'row_end'               => '</tr>',
-        'cell_start'            => '<td class="table-secondary" colspan="14">',
-        'cell_end'              => '</td>',
-
-        'row_alt_start'         => '<tr>',
-        'row_alt_end'           => '</tr>',
-        'cell_alt_start'        => '<td class="table-secondary" colspan="14">',
-        'cell_alt_end'          => '</td>',
-
-        'table_close'           => '</table>'
-		);
-
-		$this->table->set_template($template);
-		// code...
-
-		$this->table->function = 'htmlspecialchars';
-		echo $this->table->generate();
-	}
 
 	public function hitung($key, $value){
 		foreach ($value as $a => $ab) {
@@ -52,7 +22,7 @@ class Veturo extends CI_Controller {
 			#$this->load->view('welcome_message', $var);
 		}
 	}
-	public function getData($perintah, $tahun = null)
+	public function buildData($perintah, $tahun = null)
 	{
 		$th = $tahun;
 		$method = $perintah;
@@ -113,16 +83,50 @@ class Veturo extends CI_Controller {
 
 	public function index()
 	{
+		$post = array(
+			'tahun' => $this->input->post('tahun')
+		);
+
+		$menu = array(
+			'url' => $this->path, 
+			'perintah' => 'menu'
+		);
+
 		$data = array(
 			'tahun' => $this->input->post('tahun')
 		);
-		$a = null;
-		if ($data['tahun'] == '2021') {
-			$this->getData('menu','2021');
+
+		if ($post['tahun'] == '2021') {
+			$transaksi = array(
+				'url' => $this->path,
+				'perintah' => 'transaksi',
+				'tahun' => '2021'
+			);
+			$jsonTransaksi = $this->Venturo_models->venturoApi($transaksi);
+			$resultTransaksi = $this->Venturo_models->ekstrakData($jsonTransaksi, 'object');
 		}elseif($data['tahun'] == '2022'){
-			$this->getData('menu','2022');
+			$transaksi = array(
+				'url' => $this->path,
+				'perintah' => 'transaksi',
+				'tahun' => '2022'
+			);
+			$jsonTransaksi = $this->Venturo_models->venturoApi($transaksi);
+			$resultTransaksi = $this->Venturo_models->ekstrakData($jsonTransaksi, 'object');
 		}else{
 			$this->load->view('VenturoTest', null);
+		}
+
+		$jsonMenu = $this->Venturo_models->venturoApi($menu);
+		$resultMenu = $this->Venturo_models->ekstrakData($jsonMenu, 'object');
+		
+		if ($post['tahun'] !== null) {
+			# code...
+			$result = array(
+				'menu' => $resultMenu, 
+				'transaksi' => $resultTransaksi
+			);
+
+			$this->buildData($result);
 		}
 	}
 }
