@@ -7,33 +7,75 @@ class Veturo extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('venturo_models', 'Venturo_models');
+		$this->load->library('table');
 	}
 	public $path = 'http://tes-web.landa.id/intermediate/';
 
 	public function tampil($key, $value = null){
-		var_dump($key['hasil']);
+		$template = array(
+			'table_open'            => '<table border="0" cellpadding="4" cellspacing="0">',
+
+			'thead_open'            => '<thead>',
+			'thead_close'           => '</thead>',
+
+			'heading_row_start'     => '<tr>',
+			'heading_row_end'       => '</tr>',
+			'heading_cell_start'    => '<th>',
+			'heading_cell_end'      => '</th>',
+
+			'tbody_open'            => '<tbody>',
+			'tbody_close'           => '</tbody>',
+
+			'row_start'             => '<tr>',
+			'row_end'               => '</tr>',
+			'cell_start'            => '<td>',
+			'cell_end'              => '</td>',
+
+			'row_alt_start'         => '<tr>',
+			'row_alt_end'           => '</tr>',
+			'cell_alt_start'        => '<td>',
+			'cell_alt_end'          => '</td>',
+
+			'table_close'           => '</table>'
+		);
+		$this->table->set_template($template);
+
+		foreach ($key['int'] as $b => $c) {
+			$bln = $this->Venturo_models->getMonth($b);
+			$hasil = $this->Venturo_models->hitung($c);
+			//echo $bln.' => ';
+			//echo $hasil.'<br>';
+			$column = array(
+				'col' => $bln,
+				'limit' => 12
+			);
+			$row = array(
+				'rows' => $hasil
+			);
+			$this->table->set_heading('#', $bln);
+			$row = $this->table->add_row($key['menu'], $hasil);
+			$this->table->make_columns($row, 12);
+			#var_dump($bln);
+		}
+		echo $this->table->generate();
+
 	}
 
-	public function buildData($result, $tahun = null)
+	public function buildData($result)
 	{
-		$raw['menu'] = $result['menu'];
+		$menu = $result['menu'];
 		$raw['transaksi'] = $result['transaksi'];
 
 		$ttl = [];
-		foreach ($raw['menu'] as $a) {
-			echo '<br><hr>';
+		foreach ($menu as $a) {
+			$raw['menu'] = $a->menu;
 			foreach ($raw['transaksi'] as $b) {
 				if ($b->menu == $a->menu) {
 					$bln = $this->Venturo_models->getMonth($b->tanggal);
 					$ttl[$bln][] = $b->total;
 				}
 			}
-
-			foreach ($ttl as $c => $cd) {
-				$d = $this->Venturo_models->hitung($cd);
-				echo $c.' => '.$d.' <br>';
-				$raw['hasil'] = $d;
-			}
+			$raw['int'] = $ttl;
 			$this->tampil($raw);
 			$ttl = [];
 		}
