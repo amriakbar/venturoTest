@@ -103,7 +103,7 @@ class Venturo extends CI_Controller {
 			);
 			$jsonTransaksi = $this->Venturo_models->venturoApi($transaksi);
 			$resultTransaksi = $this->venturo_models->ekstrakData($jsonTransaksi, 'object');
-		} elseif($post['tahun'] == '2022') {
+		}elseif($post['tahun'] == '2022') {
 			$transaksi = array(
 				'url' => $this->path,
 				'perintah' => 'transaksi',

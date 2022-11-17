@@ -22,8 +22,19 @@ class Veturo extends CI_Controller {
 			#$this->load->view('welcome_message', $var);
 		}
 	}
-	public function buildData($perintah, $tahun = null)
+	public function buildData($result, $tahun = null)
 	{
+		$raw['menu'] = $result['menu'];
+		$raw['transaksi'] = $result['transaksi'];
+
+		$total = [];
+		foreach ($variable as $key => $value) {
+			# code...
+			foreach ($variable as $key => $value) {
+				# code...
+			}
+		}
+
 		$th = $tahun;
 		$method = $perintah;
 		if ($th != null) {
@@ -125,7 +136,6 @@ class Veturo extends CI_Controller {
 				'menu' => $resultMenu, 
 				'transaksi' => $resultTransaksi
 			);
-
 			$this->buildData($result);
 		}
 	}
