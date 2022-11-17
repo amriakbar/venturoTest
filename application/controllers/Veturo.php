@@ -10,11 +10,6 @@ class Veturo extends CI_Controller {
 	}
 	public $path = 'http://tes-web.landa.id/intermediate/';
 
-	#public function __construct(){
-	#	parent::__construct();
-	#	$this->load->model('Venturo_models', 'venturo_models');
-	#}
-
 	public function tampil($key, $value = null){
 		var_dump($key['hasil']);
 	}

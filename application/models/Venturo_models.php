@@ -19,8 +19,7 @@ class Venturo_models extends CI_Model {
 			# code...
 			$result = file_get_contents($url.$command);
 			$hasil = $this->ekstrakData($result);
-		}
-		
+		}		
 		return $result;
 	}
 
@@ -46,7 +45,6 @@ class Venturo_models extends CI_Model {
 		}else{
 			$show = $month;
 		}
-
 		return $show; //nama bulan dalam bentuk formal.
 	}
 }
