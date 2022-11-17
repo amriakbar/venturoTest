@@ -22,6 +22,7 @@ class Veturo extends CI_Controller {
 			#$this->load->view('welcome_message', $var);
 		}
 	}
+
 	public function buildData($result, $tahun = null)
 	{
 		$raw['menu'] = $result['menu'];
