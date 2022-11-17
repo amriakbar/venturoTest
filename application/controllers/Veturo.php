@@ -26,70 +26,6 @@ class Veturo extends CI_Controller {
 	{
 		$raw['menu'] = $result['menu'];
 		$raw['transaksi'] = $result['transaksi'];
-
-		$total = [];
-		foreach ($variable as $key => $value) {
-			# code...
-			foreach ($variable as $key => $value) {
-				# code...
-			}
-		}
-
-		$th = $tahun;
-		$method = $perintah;
-		if ($th != null) {
-			$ekstrak_datanya['menu'] = file_get_contents($this->path. $method);
-			$ekstrak_datanya['transaksi'] = file_get_contents($this->path. 'transaksi?tahun='. $th);
-			$this->load->view('welcome_message', $ekstrak_datanya);
-
-			$jsonMenu = json_decode($ekstrak_datanya['menu']);
-			$jsonTransaksi = json_decode($ekstrak_datanya['transaksi']);
-			foreach ($jsonTransaksi as $b) {
-				$time = strtotime($b->tanggal);
-				$bl = date('F', $time);
-				$tb_transaksi = array(
-					'menu' => $b->menu,
-					'tanggal' => $bl,
-					'total' => $b->total
-				);
-			}
-
-			$total = [];
-			foreach ($jsonMenu as $menu) {
-				foreach ($jsonTransaksi as $transaksi) {
-					if ($transaksi->menu === $menu->menu) {
-						$tgl = strtotime($transaksi->tanggal);
-						$bulan = date('F', $tgl);
-						$total[$bulan][] = $transaksi->total;					
-					}
-				}
-				$tb_mnu = array(
-					'menu' => $menu->menu,
-					'kategori' => $menu->kategori
-				);
-				foreach ($total as $key => $val) {
-					$mnu = $menu->menu;
-					if (strlen($key) > 3) {
-						$len = 3 - strlen($key);
-						$bln = substr($key, 0, $len);
-						$data = array(
-							$bln => array_sum($val)
-						);
-						$this->hitung($mnu, $data);
-					} else {
-						$data = array(
-							$key => array_sum($val)
-						);
-						$this->hitung($mnu, $data);
-					}
-				}
-				$total = [];
-			}
-		}else{
-			$ambilData = file_get_contents($this->path. $method);
-			$ekstrak_datanya = json_decode($ambilData);
-			$this->load->view('welcome_message', $ekstrak_datanya);
-		}
 	}
 
 	public function index()
@@ -137,6 +73,7 @@ class Veturo extends CI_Controller {
 				'transaksi' => $resultTransaksi
 			);
 			$this->buildData($result);
+			$this->load->view('welcome_message', $result);
 		}
 	}
 }

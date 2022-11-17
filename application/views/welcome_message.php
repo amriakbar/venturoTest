@@ -2,13 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 #echo $menu;
 #echo $transaksi;
-$ary = array(
-	'menu' => json_decode($menu, true),
-	'transaksi' => json_decode($transaksi, true)
-);
 $obj = array(
-	'menu' => json_decode($menu),
-	'transaksi' => json_decode($transaksi)
+	'menu' => $menu,
+	'transaksi' => $transaksi
 );
 ?><!DOCTYPE html>
 <html lang="en">
