@@ -50,7 +50,7 @@ class Veturo extends CI_Controller {
 
 	public function buildData($result)
 	{
-		$template = $this->tampil();
+		$this->tampil();
 		$raw['menu'] = $result['menu'];
 		$raw['transaksi'] = $result['transaksi'];
 
@@ -64,12 +64,16 @@ class Veturo extends CI_Controller {
 					$ttl[$bln][] = $b->total;
 				}
 			}
+			$menu = $a->menu;
+			$kategori[$menu][] = $ttl;
+			var_dump($kategori);
 
 			foreach ($ttl as $c => $cd) {
 				# code...
 				$hasil = $this->Venturo_models->hitung($cd);
 				$col = $this->table->add_row([$hasil]);
-				$this->table->make_columns($c, 12);
+				$this->table->make_columns($hasil, 12);
+				var_dump([$c]);
 				//$this->table->make_columns($col, 12);
 			}
 			#$raw['int'] = $ttl;
