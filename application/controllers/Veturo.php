@@ -11,7 +11,7 @@ class Veturo extends CI_Controller {
 	}
 	public $path = 'http://tes-web.landa.id/intermediate/';
 
-	public function tampil($key, $value = null){
+	public function tampil($value = null){
 		$template = array(
 			'table_open'            => '<table border="0" cellpadding="4" cellspacing="0">',
 
@@ -38,47 +38,47 @@ class Veturo extends CI_Controller {
 
 			'table_close'           => '</table>'
 		);
-		$this->table->set_template($template);
-
-		foreach ($key['int'] as $b => $c) {
-			$bln = $this->Venturo_models->getMonth($b);
-			$hasil = $this->Venturo_models->hitung($c);
-			//echo $bln.' => ';
-			//echo $hasil.'<br>';
-			$column = array(
-				'col' => $bln,
-				'limit' => 12
-			);
-			$row = array(
-				'rows' => $hasil
-			);
-			$this->table->set_heading('#', $bln);
-			$row = $this->table->add_row($key['menu'], $hasil);
-			$this->table->make_columns($row, 12);
-			#var_dump($bln);
-		}
-		echo $this->table->generate();
+		return $this->table->set_template($template);
+		//$this->table->set_heading('#', $bln);
+		//$row = $this->table->add_row($key['menu'], $hasil);
+		#$this->table->add_row($menu, $total);
+		//$this->table->make_columns($row, 12);
+		#var_dump($bln);
+		#echo $this->table->generate();
 
 	}
 
 	public function buildData($result)
 	{
-		$menu = $result['menu'];
+		$template = $this->tampil();
+		$raw['menu'] = $result['menu'];
 		$raw['transaksi'] = $result['transaksi'];
 
 		$ttl = [];
-		foreach ($menu as $a) {
-			$raw['menu'] = $a->menu;
+		foreach ($raw['menu'] as $a) {
+			#$raw['menu'] = $a->menu;
+			$this->table->add_row([$a->menu]);
 			foreach ($raw['transaksi'] as $b) {
 				if ($b->menu == $a->menu) {
 					$bln = $this->Venturo_models->getMonth($b->tanggal);
 					$ttl[$bln][] = $b->total;
 				}
 			}
-			$raw['int'] = $ttl;
-			$this->tampil($raw);
+
+			foreach ($ttl as $c => $cd) {
+				# code...
+				$hasil = $this->Venturo_models->hitung($cd);
+				$col = $this->table->add_row([$hasil]);
+				$this->table->make_columns($c, 12);
+				//$this->table->make_columns($col, 12);
+			}
+			#$raw['int'] = $ttl;
+			$this->table->function = 'htmlspecialchars';
+			
+			#			$this->tampil($raw);
 			$ttl = [];
 		}
+		echo $this->table->generate();
 	}
 
 	public function index()

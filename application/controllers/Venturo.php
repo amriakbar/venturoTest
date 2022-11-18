@@ -2,131 +2,131 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Venturo extends CI_Controller {
-	public function __construct(){
+
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->model('venturo_models', 'Venturo_models');
+		$this->load->library('table');
 	}
-
 	public $path = 'http://tes-web.landa.id/intermediate/';
 
-	public function tampil($var = array()){
-		$var['ttl'] = [];
-		$var['ttlmenu'] = [];
-		foreach ($var['menu'] as $a) {
-			foreach ($var['ttl'] as $b => $bc) {
-			var_dump($b);
-			}
-			$var['ttlmenu'] = [];
-			$var['ttl'] = [];
-			#var_dump($var['ttl']);
-		}		
+	public function tampil($value = null){
+		$template = array(
+			'table_open'            => '<table border="0" cellpadding="4" cellspacing="0">',
+
+			'thead_open'            => '<thead>',
+			'thead_close'           => '</thead>',
+
+			'heading_row_start'     => '<tr>',
+			'heading_row_end'       => '</tr>',
+			'heading_cell_start'    => '<th>',
+			'heading_cell_end'      => '</th>',
+
+			'tbody_open'            => '<tbody>',
+			'tbody_close'           => '</tbody>',
+
+			'row_start'             => '<tr>',
+			'row_end'               => '</tr>',
+			'cell_start'            => '<td>',
+			'cell_end'              => '</td>',
+
+			'row_alt_start'         => '<tr>',
+			'row_alt_end'           => '</tr>',
+			'cell_alt_start'        => '<td>',
+			'cell_alt_end'          => '</td>',
+
+			'table_close'           => '</table>'
+		);
+		return $this->table->set_template($template);
+		//$this->table->set_heading('#', $bln);
+		//$row = $this->table->add_row($key['menu'], $hasil);
+		#$this->table->add_row($menu, $total);
+		//$this->table->make_columns($row, 12);
+		#var_dump($bln);
+		#echo $this->table->generate();
+
 	}
 
-	public function buildData($result){
+	public function buildData($result)
+	{
+		$template = $this->tampil();
 		$raw['menu'] = $result['menu'];
 		$raw['transaksi'] = $result['transaksi'];
-		
-		$total = [];
-		$ttlmenu = [];
-		
+
+		$ttl = [];
 		foreach ($raw['menu'] as $a) {
-			#echo '<br>'.$a->menu.'<br><hr>';
+			#$raw['menu'] = $a->menu;
+			$this->table->add_row([$a->menu]);
 			foreach ($raw['transaksi'] as $b) {
-				if ($b->menu === $a->menu) {
-					# code...
-					$mnu = $b->menu;
-					$bulan = $this->Venturo_models->getMonth($b->tanggal);
-					$total[$bulan][] = $b->total;
-					$ttlmenu[$mnu][] = $b->total;
+				if ($b->menu == $a->menu) {
+					$bln = $this->Venturo_models->getMonth($b->tanggal);
+					$ttl[$bln][] = $b->total;
 				}
 			}
-			
-			foreach ($total as $c => $cd) {
-				$sum = $this->Venturo_models->hitung($cd);
-				if (strlen($c) > 3) {
-					# code...
-					$len = 3 - strlen($c);
-					$bln = substr($c, 0, $len);
-					$data = array(
-						$bln => $sum
-					);
-					$raw['bulan'] = $data;
-					echo '+ bulan '.$bln. '<br>';
-				}else{
-					$data = array(
-						$c => $sum
-					);
-					$raw['bulan'] = $data;
-					echo '+ bulan '.$c. '<br>';
-				}
-				$raw['res_month'] = $sum;
-				echo '  '.$sum.'<br>';
-			}
-			
-			foreach ($ttlmenu as $d => $de) {
+
+			foreach ($ttl as $c => $cd) {
 				# code...
-				$ttltahun = $this->Venturo_models->hitung($de);
-				echo '<hr><b>penjualan menu '.$a->menu.' dalam setahun = '.$ttltahun. '</b><br><br>';
+				$hasil = $this->Venturo_models->hitung($cd);
+				$col = $this->table->add_row([$hasil]);
+				$this->table->make_columns($c, 12);
+				//$this->table->make_columns($col, 12);
 			}
-
-			$raw['ttl'] = $total;
-			$raw['ttlmenu'] = $ttlmenu;
-
-			$ttlmenu = [];
-			$total = [];
+			#$raw['int'] = $ttl;
+			$this->table->function = 'htmlspecialchars';
+			
+			#			$this->tampil($raw);
+			$ttl = [];
 		}
-
-		$this->tampil($raw);
-		$this->load->view('venturo', $raw);
+		echo $this->table->generate();
 	}
 
 	public function index()
 	{
-		// original code.
-		#$this->getData('menu', '2021');
-		// original code.
 		$post = array(
 			'tahun' => $this->input->post('tahun')
 		);
 
 		$menu = array(
-			'url' => $this->path,
+			'url' => $this->path, 
 			'perintah' => 'menu'
 		);
 
+		$data = array(
+			'tahun' => $this->input->post('tahun')
+		);
+
 		if ($post['tahun'] == '2021') {
-			# code...
 			$transaksi = array(
 				'url' => $this->path,
 				'perintah' => 'transaksi',
 				'tahun' => '2021'
 			);
 			$jsonTransaksi = $this->Venturo_models->venturoApi($transaksi);
-			$resultTransaksi = $this->venturo_models->ekstrakData($jsonTransaksi, 'object');
-		}elseif($post['tahun'] == '2022') {
+			$resultTransaksi = $this->Venturo_models->ekstrakData($jsonTransaksi, 'object');
+		}elseif($data['tahun'] == '2022'){
 			$transaksi = array(
 				'url' => $this->path,
 				'perintah' => 'transaksi',
 				'tahun' => '2022'
 			);
 			$jsonTransaksi = $this->Venturo_models->venturoApi($transaksi);
-			$resultTransaksi = $this->venturo_models->ekstrakData($jsonTransaksi, 'object');
+			$resultTransaksi = $this->Venturo_models->ekstrakData($jsonTransaksi, 'object');
 		}else{
 			$this->load->view('VenturoTest', null);
 		}
-		
-		$jsonMenu = $this->Venturo_models->venturoApi($menu);
-		$resultMenu = $this->venturo_models->ekstrakData($jsonMenu, 'object');
 
+		$jsonMenu = $this->Venturo_models->venturoApi($menu);
+		$resultMenu = $this->Venturo_models->ekstrakData($jsonMenu, 'object');
+		
 		if ($post['tahun'] !== null) {
 			# code...
 			$result = array(
-				'menu' => $resultMenu,
+				'menu' => $resultMenu, 
 				'transaksi' => $resultTransaksi
 			);
-
 			$this->buildData($result);
+			$this->load->view('welcome_message', $result);
 		}
 	}
 }
-?>
