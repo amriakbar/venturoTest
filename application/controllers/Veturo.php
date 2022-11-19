@@ -55,31 +55,34 @@ class Veturo extends CI_Controller {
 		$raw['transaksi'] = $result['transaksi'];
 
 		$ttl = [];
+		$ttlmn = [];
 		foreach ($raw['menu'] as $a) {
 			#$raw['menu'] = $a->menu;
 			$this->table->add_row([$a->menu]);
 			foreach ($raw['transaksi'] as $b) {
 				if ($b->menu == $a->menu) {
+					$mn = $b->menu;
 					$bln = $this->Venturo_models->getMonth($b->tanggal);
 					$ttl[$bln][] = $b->total;
+					$ttlmn[$mn][] = $b->total;
 				}
+				#var_dump(strpos($b->menu, $a->menu));
 			}
 			$menu = $a->menu;
 			$kategori[$menu][] = $ttl;
-			var_dump($kategori);
 
 			foreach ($ttl as $c => $cd) {
-				# code...
 				$hasil = $this->Venturo_models->hitung($cd);
-				$col = $this->table->add_row([$hasil]);
 				$this->table->make_columns($hasil, 12);
-				var_dump([$c]);
-				//$this->table->make_columns($col, 12);
 			}
-			#$raw['int'] = $ttl;
+
+			foreach ($ttlmn as $d => $de){
+				$sum = $this->Venturo_models->hitung($de);
+				$this->table->add_row($sum);
+			}
 			$this->table->function = 'htmlspecialchars';
 			
-			#			$this->tampil($raw);
+			$ttlmn = [];
 			$ttl = [];
 		}
 		echo $this->table->generate();
