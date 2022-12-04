@@ -53,6 +53,8 @@ class Veturo extends CI_Controller {
 		$this->tampil();
 		$raw['menu'] = $result['menu'];
 		$raw['transaksi'] = $result['transaksi'];
+		$menu= $result['menu'];
+		$transaksi = $result['transaksi'];
 
 		$ttl = [];
 		$ttlmn = [];
