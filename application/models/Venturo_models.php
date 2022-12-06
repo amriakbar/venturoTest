@@ -48,8 +48,16 @@ class Venturo_models extends CI_Model {
 		return $show; //nama bulan dalam bentuk formal.
 	}
 	
-	function totalMenu_perbulan($str = json_decode()){
-		
+	function totalMenu_perbulan($str, $month) {
+		$val = $str;
+		$total = [];
+		foreach($val as $key => $value){
+			if($key == $month){
+				$res = array_sum($value);
+				return $res;
+			}
+		}
+		$total = [];
 	}
 }
 ?>
