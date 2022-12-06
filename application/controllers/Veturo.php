@@ -75,19 +75,16 @@ class Veturo extends CI_Controller {
 
 			foreach ($ttl as $c => $cd) {
 				$hasil = $this->Venturo_models->hitung($cd);
-				$this->table->make_columns($hasil, 12);
 			}
 
 			foreach ($ttlmn as $d => $de){
 				$sum = $this->Venturo_models->hitung($de);
-				$this->table->add_row($sum);
 			}
 			$this->table->function = 'htmlspecialchars';
 			
 			$ttlmn = [];
 			$ttl = [];
 		}
-		echo $this->table->generate();
 	}
 
 	public function index()
