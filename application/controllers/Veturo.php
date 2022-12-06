@@ -59,7 +59,7 @@ class Veturo extends CI_Controller {
 		$ttl = [];
 		$ttlmn = [];
 		foreach ($raw['menu'] as $a) {
-			#$raw['menu'] = $a->menu;
+			
 			$this->table->add_row([$a->menu]);
 			foreach ($raw['transaksi'] as $b) {
 				if ($b->menu == $a->menu) {
@@ -68,8 +68,8 @@ class Veturo extends CI_Controller {
 					$ttl[$bln][] = $b->total;
 					$ttlmn[$mn][] = $b->total;
 				}
-				#var_dump(strpos($b->menu, $a->menu));
 			}
+			
 			$menu = $a->menu;
 			$kategori[$menu][] = $ttl;
 
@@ -80,7 +80,6 @@ class Veturo extends CI_Controller {
 			foreach ($ttlmn as $d => $de){
 				$sum = $this->Venturo_models->hitung($de);
 			}
-			$this->table->function = 'htmlspecialchars';
 			
 			$ttlmn = [];
 			$ttl = [];
