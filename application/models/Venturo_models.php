@@ -47,5 +47,9 @@ class Venturo_models extends CI_Model {
 		}
 		return $show; //nama bulan dalam bentuk formal.
 	}
+	
+	function totalMenu_perbulan($str = json_decode()){
+		
+	}
 }
 ?>
