@@ -5,24 +5,6 @@ class Venturo_models extends CI_Model {
 	var $url;
 	var $th;
 	#var $bulan;
-
-	function venturoApi($content = array()){
-		$url = $content['url'];
-		$command = $content['perintah'];
-
-		if (key_exists('tahun', $content)) {
-			# code...
-			$th = $content['tahun'];
-			$result = file_get_contents($url.$command.'?tahun='.$th);
-			$hasil = $this->ekstrakData($result);
-		} else {
-			# code...
-			$result = file_get_contents($url.$command);
-			$hasil = $this->ekstrakData($result);
-		}		
-		return $result;
-	}
-
 	function ekstrakData($json, $method = null){
 		if ($method == 'array') {
 			return json_decode($json, true);
@@ -30,6 +12,24 @@ class Venturo_models extends CI_Model {
 			return json_decode($json);
 		}		
 	}
+	
+		function venturoApi($content = array()){
+			$url = $content['url'];
+			$command = $content['perintah'];
+	
+			if (key_exists('tahun', $content)) {
+				# code...
+				$th = $content['tahun'];
+				$result = file_get_contents($url.$command.'?tahun='.$th);
+				$hasil = $this->ekstrakData($result);
+			} else {
+				# code...
+				$result = file_get_contents($url.$command);
+				$hasil = $this->ekstrakData($result);
+			}		
+			return $result;
+		}
+	
 
 	function hitung($int = []){
 		#var_dump(count($int));
