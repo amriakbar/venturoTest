@@ -12,40 +12,12 @@ class Veturo extends CI_Controller {
 	public $path = 'https://tes-web.landa.id/intermediate/';
 
 	public function tampil($value = null){
-		$template = array(
-			'table_open'            => '<table border="0" cellpadding="4" cellspacing="0">',
-
-			'thead_open'            => '<thead>',
-			'thead_close'           => '</thead>',
-
-			'heading_row_start'     => '<tr>',
-			'heading_row_end'       => '</tr>',
-			'heading_cell_start'    => '<th>',
-			'heading_cell_end'      => '</th>',
-
-			'tbody_open'            => '<tbody>',
-			'tbody_close'           => '</tbody>',
-
-			'row_start'             => '<tr>',
-			'row_end'               => '</tr>',
-			'cell_start'            => '<td>',
-			'cell_end'              => '</td>',
-
-			'row_alt_start'         => '<tr>',
-			'row_alt_end'           => '</tr>',
-			'cell_alt_start'        => '<td>',
-			'cell_alt_end'          => '</td>',
-
-			'table_close'           => '</table>'
-		);
-		//return $this->table->set_template($template);
-		//$this->table->set_heading('#', $bln);
-		//$row = $this->table->add_row($key['menu'], $hasil);
-		#$this->table->add_row($menu, $total);
-		//$this->table->make_columns($row, 12);
-		#var_dump($bln);
-		#echo $this->table->generate();
-
+		if($value !== null){
+			for ($i = 1; $i <= 12; $i++){
+				echo $i . ' ' . $value['ttl'].'<br>';
+				var_dump($value['ttl']);
+			}
+		}
 	}
 
 	public function buildData($result)
@@ -68,16 +40,18 @@ class Veturo extends CI_Controller {
 			}
 
 			foreach ($ttl as $c => $cd) {
-				$hasil = $this->Venturo_models->hitung($cd);
+				$raw['ttl'] = $this->Venturo_models->hitung($cd);
 			}
 
 			foreach ($ttlmn as $d => $de){
-				$sum = $this->Venturo_models->hitung($de);
+				$raw['ttlmn'] = $this->Venturo_models->hitung($de);
 			}
 			
 			$ttlmn = [];
 			$ttl = [];
 		}
+
+		$this->tampil($raw);
 	}
 
 	public function index()
