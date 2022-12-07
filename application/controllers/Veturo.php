@@ -9,7 +9,7 @@ class Veturo extends CI_Controller {
 		$this->load->model('venturo_models', 'Venturo_models');
 		$this->load->library('table');
 	}
-	public $path = 'http://tes-web.landa.id/intermediate/';
+	public $path = 'https://tes-web.landa.id/intermediate/';
 
 	public function tampil($value = null){
 		$template = array(
@@ -82,9 +82,7 @@ class Veturo extends CI_Controller {
 
 	public function index()
 	{
-		$post = array(
-			'tahun' => $this->input->post('tahun')
-		);
+		$post = $this->input->post('tahun');
 
 		$menu = array(
 			'url' => $this->path, 
@@ -95,7 +93,7 @@ class Veturo extends CI_Controller {
 		//	'tahun' => $this->input->post('tahun')
 		//);
 
-		if ($post['tahun'] == '2021') {
+		if ($post== '2021') {
 			$transaksi = array(
 				'url' => $this->path,
 				'perintah' => 'transaksi',
@@ -103,7 +101,7 @@ class Veturo extends CI_Controller {
 			);
 			$jsonTransaksi = $this->Venturo_models->venturoApi($transaksi);
 			$resultTransaksi = $this->Venturo_models->ekstrakData($jsonTransaksi, 'object');
-		}elseif($post['tahun'] == '2022'){
+		}elseif($post == '2022'){
 			$transaksi = array(
 				'url' => $this->path,
 				'perintah' => 'transaksi',
@@ -118,7 +116,7 @@ class Veturo extends CI_Controller {
 		$jsonMenu = $this->Venturo_models->venturoApi($menu);
 		$resultMenu = $this->Venturo_models->ekstrakData($jsonMenu, 'object');
 		
-		if ($post['tahun'] !== null) {
+		if ($post !== null) {
 			# code...
 			$result = array(
 				'menu' => $resultMenu, 
