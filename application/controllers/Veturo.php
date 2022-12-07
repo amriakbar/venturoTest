@@ -59,8 +59,6 @@ class Veturo extends CI_Controller {
 		$ttl = [];
 		$ttlmn = [];
 		foreach ($raw['menu'] as $a) {
-			
-			$this->table->add_row([$a->menu]);
 			foreach ($raw['transaksi'] as $b) {
 				if ($b->menu == $a->menu) {
 					$mn = $b->menu;
@@ -69,9 +67,6 @@ class Veturo extends CI_Controller {
 					$ttlmn[$mn][] = $b->total;
 				}
 			}
-			
-			$menu = $a->menu;
-			$kategori[$menu][] = $ttl;
 
 			foreach ($ttl as $c => $cd) {
 				$hasil = $this->Venturo_models->hitung($cd);

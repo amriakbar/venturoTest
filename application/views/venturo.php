@@ -135,24 +135,24 @@
                         </thead>
                         <tbody>
                         	<tr><td class="table-secondary" colspan="14"><b>Makanan</b></td></tr>
-							<tr>
-							    <td>'.$k->menu.'</td>
-							    <td style="text-align: right;">'. array_sum($biaya) .'</td>
-							    <td style="text-align: right;"></td>
-							    <td style="text-align: right;"><b>'.array_sum($th).'</b></td>
-							</tr>
-							<tr><td class="table-secondary" colspan="14"><b>Minuman</b></td></tr>					
-							<tr>
-							    <td>'.$min->menu.'</td>
-							    <td style="text-align: right;">'.array_sum($nilai).'</td>
-							    <td style="text-align: right;">'. ' ' .'</td>
-							    <td style="text-align: right;"><b>'.array_sum($hasil).'</b></td>
-							</tr>
-							<tr class="table-dark">
-							    <td style="text-align: right;">
-							    	<b>'.array_sum($key).'</b>
-							    </td>
-                                <td style="text-align: right;"><b>3,965,000</b></td>
+														<tr>
+																<td>'.$k->menu.'</td>
+																<td style="text-align: right;">'. array_sum($biaya) .'</td>
+																<td style="text-align: right;"></td>
+																<td style="text-align: right;"><b>'.array_sum($th).'</b></td>
+														</tr>
+														<tr><td class="table-secondary" colspan="14"><b>Minuman</b></td></tr>					
+														<tr>
+															<td>'.$min->menu.'</td>
+															<td style="text-align: right;">'.array_sum($nilai).'</td>
+															<td style="text-align: right;">'. ' ' .'</td>
+															<td style="text-align: right;"><b>'.array_sum($hasil).'</b></td>
+														</tr>
+														<tr class="table-dark">
+															<td style="text-align: right;">
+																<b>'.array_sum($key).'</b>
+															</td>
+															<td style="text-align: right;"><b>3,965,000</b></td>
                             </tr>
                         </tbody>
                     </table>

@@ -53,8 +53,8 @@ class Venturo_models extends CI_Model {
 		$total = [];
 		foreach($val as $key => $value){
 			if($key == $month){
-				$res = array_sum($value);
-				return $res;
+				$total[$key][] = $value;
+				return $total;
 			}
 		}
 		$total = [];

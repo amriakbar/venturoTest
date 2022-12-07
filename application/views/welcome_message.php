@@ -234,29 +234,21 @@ $obj = array(
 							    	<b>Total</b>
 							    	<?php
 							    	$total = [];
-							    	$t_menu = [];
-							    	foreach($obj['menu'] as $a){
-							    		$menu = $a->menu;
-							    		$kategori = $a->kategori;
-							    		foreach($obj['transaksi'] as $b){
-							    			if ($b->menu === $menu) {
-							    				$time = strtotime($b->tanggal);
-							    				$tanggal = date('F', $time);
-							    				$total[$tanggal][] = $b->total;
-							    				$t_menu[$menu][] = $b->total;
-							    			}
-							    		}
-							    		foreach($t_menu as $c => $cd){
-									    	echo '
-									    	<td style="text-align: right;"><b>'.array_sum($cd).'</b></td>
-									    	';
-							    		}
-							    	$t_menu = [];
+										foreach($obj['transaksi'] as $k => $v){
+	                    $len = $v->tanggal;
+	                    $b = substr($v->tanggal, 5, 2);
+	                    $total[$b][] = $v->total;
+										}
+
+										foreach($total as $a => $c){
+	                    echo '
+											</td>
+											<td style="text-align: right;"><b>'.array_sum($c).'</b></td>
+											';
+										}
 							    	$total = [];
-							    	}
 							    	?>
-							    </td>
-                                <td style="text-align: right;"><b>3,965,000</b></td>
+									<td style="text-align: right;"><b>3,965,000</b></td>
                             </tr>
                         </tbody>
                     </table>
