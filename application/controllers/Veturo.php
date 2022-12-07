@@ -15,7 +15,7 @@ class Veturo extends CI_Controller {
 		if($value !== null){
 			for ($i = 1; $i <= 12; $i++){
 				echo $i . ' ' . $value['ttl'].'<br>';
-				var_dump($value['ttl']);
+				//var_dump($value['ttl']);
 			}
 		}
 	}
