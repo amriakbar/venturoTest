@@ -38,7 +38,7 @@ class Veturo extends CI_Controller {
 
 			'table_close'           => '</table>'
 		);
-		return $this->table->set_template($template);
+		//return $this->table->set_template($template);
 		//$this->table->set_heading('#', $bln);
 		//$row = $this->table->add_row($key['menu'], $hasil);
 		#$this->table->add_row($menu, $total);
@@ -50,7 +50,6 @@ class Veturo extends CI_Controller {
 
 	public function buildData($result)
 	{
-		$this->tampil();
 		$raw['menu'] = $result['menu'];
 		$raw['transaksi'] = $result['transaksi'];
 		$menu= $result['menu'];
@@ -92,9 +91,9 @@ class Veturo extends CI_Controller {
 			'perintah' => 'menu'
 		);
 
-		$data = array(
-			'tahun' => $this->input->post('tahun')
-		);
+		//$data = array(
+		//	'tahun' => $this->input->post('tahun')
+		//);
 
 		if ($post['tahun'] == '2021') {
 			$transaksi = array(
@@ -104,7 +103,7 @@ class Veturo extends CI_Controller {
 			);
 			$jsonTransaksi = $this->Venturo_models->venturoApi($transaksi);
 			$resultTransaksi = $this->Venturo_models->ekstrakData($jsonTransaksi, 'object');
-		}elseif($data['tahun'] == '2022'){
+		}elseif($post['tahun'] == '2022'){
 			$transaksi = array(
 				'url' => $this->path,
 				'perintah' => 'transaksi',
