@@ -96,7 +96,8 @@ class Veturo extends CI_Controller {
 				'transaksi' => $resultTransaksi
 			);
 			$this->buildData($result);
-			$this->load->view('welcome_message', $result);
+			$this->load->view('Venturo', $result);
 		}
 	}
 }
+

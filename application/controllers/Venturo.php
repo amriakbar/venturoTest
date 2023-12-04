@@ -47,7 +47,6 @@ class Venturo extends CI_Controller {
 		#echo $this->table->generate();
 
 	}
-
 	public function buildData($result)
 	{
 		$template = $this->tampil();
